@@ -1,6 +1,6 @@
 Curs devops
 
- 
+
 [day one]
 Alexandra
 - build system, deployment and automation (CI/CD)
@@ -13,19 +13,14 @@ Andrei
 build and deploy app in VM on cloud (or docker)
  
 
-
-
-
-
 [day two]
-Alexandra
-- remote automation (Puppet, Chef, Ansible)
-- Jenkins in Cloud (VM) [+Andrei]
-
 Andrei
 - Infrastructure as code (Terraform)
 - App run in Google 
 
+Alexandra
+- remote automation (Puppet, Chef, Ansible)
+- Jenkins in Cloud (VM) [+Andrei]
 
 
 
