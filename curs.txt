@@ -1,0 +1,48 @@
+Curs devops
+
+ 
+[day one]
+Alexandra
+- build system, deployment and automation (CI/CD)
+- Linux OS and bash commands
+ 
+Andrei
+- VMs, containers and container orchestration (Kubernetes)
+- Cloud ecosystems
+[exercitiu]
+build and deploy app in VM on cloud (or docker)
+ 
+
+
+
+
+
+[day two]
+Alexandra
+- remote automation (Puppet, Chef, Ansible)
+- Jenkins in Cloud (VM) [+Andrei]
+
+Andrei
+- Infrastructure as code (Terraform)
+- App run in Google 
+
+
+
+
+
+
+
+[intrebari]
+
+cate ore dureaza fiecare sesiune - 4h
+exercitiul practic are loc in timpul cursului, sau ca tema de casa - in timpul cursului
+nivel de cunostiinte existent al cursantilor (linux, etc) - 0
+
+exista examen? cand e? detalii...
+exist proiect final? detalii...
+- sustinere proiect
+- sfarsitul ianuare proiect
+- examen potential online; momentan nu se cunoaste data exacta
+
+
+
