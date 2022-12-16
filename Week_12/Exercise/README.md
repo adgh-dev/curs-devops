@@ -5,8 +5,8 @@
 - [Exercise 1 - Create a VM in Google Cloud](#exercise-1---create-a-vm-in-google-cloud)
 - [Exercise 2 - Deploy the quote-service application in VM](#exercise-2---deploy-the-quote-service-application-in-vm)
 - [Exercise 3 - Install and configure Docker on a Debian 11 host](#exercise-3---install-and-configure-docker-on-a-debian-11-host)
-- [Exercise 4 -  Build and deploy the application in a Docker container](#exercise-4---build-and-deploy-the-application-in-a-docker-container)
-- [Exercise 5 -  Deploy quote-service as a serverless application](#exercise-5---deploy-quote-service-as-a-serverless-application)
+- [Exercise 4 - Build and deploy the application in a Docker container](#exercise-4---build-and-deploy-the-application-in-a-docker-container)
+- [Exercise 5 - Deploy quote-service as a serverless application](#exercise-5---deploy-quote-service-as-a-serverless-application)
 
 <br/>
 
@@ -150,7 +150,7 @@ Sample output:
 
 <br/>
 
-## Exercise 4 -  Build and deploy the application in a Docker container
+## Exercise 4 - Build and deploy the application in a Docker container
 
 - First install git:
 ```
@@ -206,7 +206,7 @@ To test the connection, copy the VMs `external IP` and use that from a network o
 
 <br/>
 
-## Exercise 5 -  Deploy quote-service as a serverless application
+## Exercise 5 - Deploy quote-service as a serverless application
 
 This allows the user to deploy an application without setting up anything on the server. The feature is available in most Cloud ecosystems (it actually does everything behind the scenes for setting up the server) and enables a developer to have the application running with little to no system level setup. In GCP there are several flavours of serverless deployments, but the most basic and the one that is presented here is 'Cloud Run'
 
