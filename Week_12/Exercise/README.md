@@ -3,7 +3,7 @@
 ## Table of contents
 
 - [Exercise 1 - Create a VM in Google Cloud](#exercise-1---create-a-vm-in-google-cloud)
-- [Exercise 2 - Deploy the quotes-service application in VM](#exercise-2---deploy-the-quotes-service-application-in-vm)
+- [Exercise 2 - Deploy the quote-service application in VM](#exercise-2---deploy-the-quote-service-application-in-vm)
 - [Exercise 3 - Install and configure Docker on a Debian 11 host](#exercise-3---install-and-configure-docker-on-a-debian-11-host)
 - [Exercise 4 -  Build and deploy the application in a Docker container](#exercise-4---build-and-deploy-the-application-in-a-docker-container)
 - [Exercise 5 -  Deploy quote-service as a serverless application](#exercise-5---deploy-quote-service-as-a-serverless-application)
