@@ -2,10 +2,29 @@
 
 ## Table of contents
 
+- [What is DevOps?]
+- [DevOps - when Development meets Operations]
+- [Benefits of DevOps]
+- [DevOps Practices]
+- [Linux commands in DevOps]
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
 - [Overview of Container](#overview-of-a-container)
 - [Container Orchestration](#container-orchestration)
 - [Cloud Computing](#cloud-computing)
+
+## What is DevOps?
+
+DevOps is an approach to culture, automation, and platform design intended to deliver increased business value and responsiveness through rapid, high-quality service delivery.
+
+The word "DevOps" is a mashup of "development’ and "operations" but it represents a set of ideas and practices much larger than those two terms alone, or together. DevOps describes approaches to speed up the processes by which an idea (like a new software feature, a request for enhancement, or a bug fix) goes from development to deployment in a production environment where it can provide value to the user. These approaches require that development teams and operations teams communicate frequently and approach their work with empathy for their teammates. 
+
+## DevOps - when Development meets Operations
+
+ - Development: the infrastructure needed to unify development, from distributing resources to writing code and algorithms for enterprise applications, which can benefit from advanced capabilities such as AI/machine learning, containers, and serverless features. In addition, testing, archiving, tracking coding errors, and other important tasks are performed during the development phase, all on the way to release. Some frequently used tools for development: Git for code input, Github or the evolutionary Bitbucket for managing code repositories.
+
+ - Operations - after an application is deployed, the operations side takes over, focusing on ensuring that cloud platforms are running smoothly. This function includes addressing issues such as user security, database management, scalability of production workflows, and patching. Some commonly used tools for operations: Terraform, Ansible, Puppet, and Chef for infrastructure and configuration management.
+
+The result is an efficient model that maximizes resources and works at the ever-faster pace of the software development process, something that has become increasingly difficult to achieve with the traditional development model. In conclusion, a strong DevOps model enables companies to fix problems, grow users, and serve customers better by developing and iterating software products faster.
 
 ## Overview of Virtual Machine
 
