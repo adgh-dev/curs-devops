@@ -2,6 +2,11 @@
 
 ## Table of contents
 
+- [What is DevOps?]
+- [DevOps - when Development meets Operations]
+- [Benefits of DevOps]
+- [DevOps Practices]
+- [Linux commands in DevOps]
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
 - [Overview of Container](#overview-of-a-container)
 - [Differences between Virtual Machines and Containers](#differences-between-virtual-machines-and-containers)
