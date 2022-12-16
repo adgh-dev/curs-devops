@@ -4,7 +4,8 @@
 
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
 - [Overview of Container](#overview-of-a-container)
-- [Differences between Virtual Machines and Containers](#differences-between-virtual-machines-and-containers)
+- [Container Orchestration](#container-orchestration)
+- [Cloud Computing](#cloud-computing)
 
 ## Overview of Virtual Machine
 
@@ -84,3 +85,39 @@ One big advantage of container orchestration is that you may implement it in any
 
 ![kubernetes-cluster](https://preview.redd.it/lmewib0evdv41.png?width=926&format=png&auto=webp&s=f8bad3c01ef9e2e05b4b0fff703a8fa3f7d705fd)
 ![kubernetes-node](https://preview.redd.it/kjaq7ahfvdv41.png?width=562&format=png&auto=webp&s=06420f0355f3191c9efbbd4af90293f878fc4f92)
+
+<br/>
+
+## Cloud Computing
+
+Cloud computing is a general term for anything that involves delivering hosted services over the internet. These services are divided into three main categories or types of cloud computing: infrastructure as a service (IaaS), platform as a service (PaaS) and software as a service (SaaS).
+
+A cloud can be private or public. A public cloud sells services to anyone on the internet. A private cloud is a proprietary network or a data center that supplies hosted services to a limited number of people, with certain access and permissions settings. Private or public, the goal of cloud computing is to provide easy, scalable access to computing resources and IT services.
+
+Cloud infrastructure involves the hardware and software components required for proper implementation of a cloud computing model. Cloud computing can also be thought of as utility computing or on-demand computing.
+
+![cloud-services](https://www.mtechsystems.co.uk/wp-content/uploads/2022/06/Understanding-the-Different-Types-of-Cloud-Computing-Services-1024x414.jpg)
+
+For what we are concerned, as devops engineers, we will look at IaaS offerings from cloud providers. Major players on the market at the time of this writing are:
+- Amazon Web Services (AWS)
+- Microsoft Azure
+- Google Cloud Platform (GCP)
+
+Throughout the exercises we will be using GCP, as it offers an extensive trial program of 3 months, with 99% of the services available (mostly services that require external licensing are unavailable - for example Windows Server VMs)
+
+|     |                                            | Google Cloud Platform products span the following categories:                                                                                                                                                                                                                   |
+| --- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.  | Artificial intelligence & Machine Learning | AI Hub (beta), Cloud AutoML (beta), Cloud TPU, Cloud Machine Learning Engine, Diagflow Enterprise Edition, Cloud Natural Language, Cloud Speech-to-Text, Cloud Text-to-Speech, Cloud Translation, Cloud Vision, Cloud Video Intelligence, Cloud Inference API (alpha), and more |
+| 2.  | API management                             | API Analytics, API Monetization, Cloud Endpoints, Developer Portal, Cloud Healthcare API                                                                                                                                                                                        |
+| 3.  | Compute                                    | Compute Engine, Shielded VMs, Container Security, App Engine, Cloud Functions, GPU, and more                                                                                                                                                                                    |
+| 4.  | Data Analytics                             | BigQuery, Cloud Dataflow, Cloud Dataproc, Cloud Datalab, Cloud Dataprep, Cloud Composer, and more                                                                                                                                                                               |
+| 5.  | Databases                                  | Cloud SQL, Cloud Bigtable, Cloud Spanner, Cloud Datastore, Cloud Memorystore                                                                                                                                                                                                    |
+| 6.  | Developer Tools                            | Cloud SDK, Container Registry, Cloud Build, Cloud Source Repositories, Cloud Tasks, and more, as well as Cloud Tools for IntelliJ, PowerShell, Visual Studio, and Eclipse                                                                                                       |
+| 7.  | Internet of Things (IoT)                   | Cloud IoT Core, Edge TPU (beta)                                                                                                                                                                                                                                                 |
+| 8.  | Hybrid and multi-cloud                     | Google Kubernetes Engine, GKE On-Prem, Istio on GKE (beta), Anthos Config Management, Serverless, Stackdriver, and more                                                                                                                                                         |
+| 9.  | Management Tools                           | Stackdriver, Monitoring, Trace, Logging, Debugger, Cloud Console, and more                                                                                                                                                                                                      |
+| 10. | Media                                      | Anvato, Zync Render                                                                                                                                                                                                                                                             |
+| 11. | Migration                                  | Cloud Data Transfer, Transfer Appliance, BigQuery Data Transfer Service, Velostrata, VM Migration, and more                                                                                                                                                                     |
+| 12. | Networking                                 | Virtual Private Cloud (VPC), Cloud Load Balancing, Cloud Armor, Cloud CDN, Cloud NAT, Cloud Interconnect, Cloud VPN, Cloud DNS, Network Service Tiers, Network Telemetry                                                                                                        |
+| 13. | Security                                   | Access Transparency, Cloud Identity, Cloud Data Loss Prevention, Cloud Key Management Service, Cloud Security Scanner, and more                                                                                                                                                 |
+| 14. | Storage                                    | Cloud Storage, Persistent Disk, Cloud Filestore, and more                                                                                                                                                                                                                       |
