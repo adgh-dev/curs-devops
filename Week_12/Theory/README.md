@@ -2,9 +2,9 @@
 
 ## Table of contents
 
-- [What is DevOps?]
-- [DevOps - when Development meets Operations]
-- [Benefits of DevOps](#devops)
+- [What is DevOps?](#devops)
+- [DevOps - when Development meets Operations](#devops1)
+- [Benefits of DevOps](#benefits)
 - [DevOps Practices]
 - [Linux commands in DevOps]
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
@@ -18,13 +18,22 @@ DevOps is an approach to culture, automation, and platform design intended to de
 
 The word "DevOps" is a mashup of "development’ and "operations" but it represents a set of ideas and practices much larger than those two terms alone, or together. DevOps describes approaches to speed up the processes by which an idea (like a new software feature, a request for enhancement, or a bug fix) goes from development to deployment in a production environment where it can provide value to the user. These approaches require that development teams and operations teams communicate frequently and approach their work with empathy for their teammates. 
 
-## DevOps - when Development meets Operations
+## DevOps - when Development meets Operations <a name="devops1"></a>
 
  - Development: the infrastructure needed to unify development, from distributing resources to writing code and algorithms for enterprise applications, which can benefit from advanced capabilities such as AI/machine learning, containers, and serverless features. In addition, testing, archiving, tracking coding errors, and other important tasks are performed during the development phase, all on the way to release. Some frequently used tools for development: Git for code input, Github or the evolutionary Bitbucket for managing code repositories.
 
  - Operations - after an application is deployed, the operations side takes over, focusing on ensuring that cloud platforms are running smoothly. This function includes addressing issues such as user security, database management, scalability of production workflows, and patching. Some commonly used tools for operations: Terraform, Ansible, Puppet, and Chef for infrastructure and configuration management.
 
 The result is an efficient model that maximizes resources and works at the ever-faster pace of the software development process, something that has become increasingly difficult to achieve with the traditional development model. In conclusion, a strong DevOps model enables companies to fix problems, grow users, and serve customers better by developing and iterating software products faster.
+
+## Benefits od DevOps <a name="benefits"></a>
+
+1. Speed ![image](https://user-images.githubusercontent.com/24647488/208228552-717fe828-42ea-4358-8d2a-0971e6771156.png)
+
+With a flexible DevOps model, technology is optimized according to current lifecycle needs. In many cases, DevOps uses the latest machine learning and artificial intelligence technologies to achieve speed. 
+
+DevOps also emphasizes automation and continuous integration/delivery, freeing staff from a number of manual activities to focus on innovation. On the development side, engineers can reach their coding goals faster or collaborate more effectively. On the operations side, system administrators can use automation frameworks to easily provision and upgrade new applications and infrastructure.
+
 
 ## Overview of Virtual Machine
 
