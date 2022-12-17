@@ -30,9 +30,30 @@ The result is an efficient model that maximizes resources and works at the ever-
 
 1. Speed 
 
-![image](https://user-images.githubusercontent.com/24647488/208228552-717fe828-42ea-4358-8d2a-0971e6771156.png) With a flexible DevOps model, technology is optimized according to current lifecycle needs. In many cases, DevOps uses the latest machine learning and artificial intelligence technologies to achieve speed. 
+![image](https://user-images.githubusercontent.com/24647488/208228552-717fe828-42ea-4358-8d2a-0971e6771156.png) With a flexible DevOps model, technology is optimized according to current lifecycle needs. In many cases, DevOps uses the latest machine learning and artificial intelligence technologies to achieve speed. DevOps also emphasizes automation and continuous integration/delivery, freeing staff from a number of manual activities to focus on innovation. On the development side, engineers can reach their coding goals faster or collaborate more effectively. On the operations side, system administrators can use automation frameworks to easily provision and upgrade new applications and infrastructure.
 
-DevOps also emphasizes automation and continuous integration/delivery, freeing staff from a number of manual activities to focus on innovation. On the development side, engineers can reach their coding goals faster or collaborate more effectively. On the operations side, system administrators can use automation frameworks to easily provision and upgrade new applications and infrastructure.
+2. Rapid Delivery
+
+![image](https://user-images.githubusercontent.com/24647488/208228727-beb09e53-6425-4728-aa89-107ca5a893ff.png) Increase the frequency and pace of releases so you can innovate and improve your product faster. The quicker you can release new features and fix bugs, the faster you can respond to your customers' needs and build competitive advantage. Continuous integration and continuous delivery are practices that automate the software release process, from build to deploy.
+
+3. Reliability
+
+![image](https://user-images.githubusercontent.com/24647488/208228752-d1ae800a-4a2b-4d0e-a38f-20bb1044163d.png) Ensure the quality of application updates and infrastructure changes so you can reliably deliver at a more rapid pace while maintaining a positive experience for end users. Use practices like continuous integration and continuous delivery to test that each change is functional and safe. Monitoring and logging practices help you stay informed of performance in real-time.
+
+4. Scale
+
+![image](https://user-images.githubusercontent.com/24647488/208228772-b5387209-420c-49ed-88b0-1e14bffe6120.png) Operate and manage your infrastructure and development processes at scale. Automation and consistency help you manage complex or changing systems efficiently and with reduced risk. For example, infrastructure as code helps you manage your development, testing, and production environments in a repeatable and more efficient manner.
+
+5. Improved Collaboration
+
+![image](https://user-images.githubusercontent.com/24647488/208228780-77b2b62c-9b44-4a9b-ab1b-0a49e89aaca8.png) Build more effective teams under a DevOps cultural model, which emphasizes values such as ownership and accountability. Developers and operations teams collaborate closely, share many responsibilities, and combine their workflows. This reduces inefficiencies and saves time (reduced handover periods between developers and operations, writing code that takes into account the environment in which it is run).
+
+6. Security
+
+![image](https://user-images.githubusercontent.com/24647488/208228811-870c9c25-45a9-4ac7-80c9-1785402ccd66.png) Move quickly while retaining control and preserving compliance. You can adopt a DevOps model without sacrificing security by using automated compliance policies, fine-grained controls, and configuration management techniques. For example, using infrastructure as code and policy as code, you can define and then track compliance at scale.
+
+
+
 
 
 ## Overview of Virtual Machine
