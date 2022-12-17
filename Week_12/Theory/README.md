@@ -4,7 +4,7 @@
 
 - [What is DevOps?]
 - [DevOps - when Development meets Operations]
-- [Benefits of DevOps]
+- [Benefits of DevOps](#devops)
 - [DevOps Practices]
 - [Linux commands in DevOps]
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
@@ -12,7 +12,7 @@
 - [Container Orchestration](#container-orchestration)
 - [Cloud Computing](#cloud-computing)
 
-## What is DevOps?
+## What is DevOps? <a name="devops"></a>
 
 DevOps is an approach to culture, automation, and platform design intended to deliver increased business value and responsiveness through rapid, high-quality service delivery.
 
