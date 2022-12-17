@@ -6,7 +6,7 @@
 - [DevOps - when Development meets Operations](#devops1)
 - [Benefits of DevOps](#benefits)
 - [DevOps Practices](#practices)
-- [Linux commands in DevOps]
+- [Linux commands in DevOps](#linux)
 - [Overview of Virtual Machine](#overview-of-virtual-machine)
 - [Overview of Container](#overview-of-a-container)
 - [Container Orchestration](#container-orchestration)
@@ -79,6 +79,25 @@ The result is an efficient model that maximizes resources and works at the ever-
 ### Communication & Collaboration
 ![image](https://user-images.githubusercontent.com/24647488/208229061-157dcb70-263e-40bd-8ce3-f8cc93853acc.png) Increased communication and collaboration in an organization is one of the key cultural aspects of DevOps. The use of DevOps tooling and automation of the software delivery process establishes collaboration by physically bringing together the workflows and responsibilities of development and operations. Building on top of that, these teams set strong cultural norms around information sharing and facilitating communication through the use of chat applications, issue or project tracking systems, and wikis. This helps speed up communication across developers, operations, and even other teams like marketing or sales, allowing all parts of the organization to align more closely on goals and projects.
 
+## Linux commands in DevOps <a name="linux"></a>
+
+In this section, we will have a look at the most frequently used Linux commands that are used while working in DevOps.
+
+- ls -> this command lists all the contents in the current working directory. 
+### Syntax: $ ls <flag>
+ ls <path name> -> By specifying the path after ls, the content in that path will be displayed
+ ls -l -> using ‘l’ flag, lists all the contents along with its owner settings, permissions & timestamp (long format)
+ ls -a -> using ‘a’ flag, lists all the hidden contents in the specified directory
+ 
+- sudo -> this command executes only that command with root/ superuser privileges. 
+### Syntax: $ sudo <command>
+ 
+- cat -> this command can read, modify or concatenate text files. It also displays file contents. 
+### Syntax: $ cat <flag> {filename}
+ cat -b -> this adds line numbers to non-blank lines
+ cat -n -> this adds line numbers to all lines
+ cat -s -> this squeezes blank lines into one line
+ cat -E -> this shows $ at the end of line
 
 ## Overview of Virtual Machine
 
