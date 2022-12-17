@@ -84,20 +84,38 @@ The result is an efficient model that maximizes resources and works at the ever-
 In this section, we will have a look at the most frequently used Linux commands that are used while working in DevOps.
 
 - ls -> this command lists all the contents in the current working directory.\
-*Syntax: $ ls <flag>*
+*Syntax: $ ls <flag> *\
  ls <path name> -> By specifying the path after ls, the content in that path will be displayed\
  ls -l -> using ‘l’ flag, lists all the contents along with its owner settings, permissions & timestamp (long format)\
  ls -a -> using ‘a’ flag, lists all the hidden contents in the specified directory
  
 - sudo -> this command executes only that command with root/ superuser privileges. 
-### Syntax: $ sudo <command>
+*Syntax: $ sudo <command>*
  
 - cat -> this command can read, modify or concatenate text files. It also displays file contents.\
-*Syntax: $ cat <flag> {filename}*
- cat -b -> this adds line numbers to non-blank lines\
- cat -n -> this adds line numbers to all lines\
- cat -s -> this squeezes blank lines into one line\
- cat -E -> this shows $ at the end of line\
+*Syntax: $ cat <flag> {filename}*\
+cat -b -> this adds line numbers to non-blank lines\
+cat -n -> this adds line numbers to all lines\
+cat -s -> this squeezes blank lines into one line\
+cat -E -> this shows $ at the end of line\
+ 
+- grep -> this command searches for a particular string/ word in a text file. This is similar to “Ctrl+F” but executed via a CLI. 
+*Syntax: $ grep <flag or element_to_search> {filename}* \
+grep -i -> returns the results for case insensitive strings\
+grep -n -> returns the matching strings along with their line number\
+grep -v -> returns the result of lines not matching the search string\
+grep -c -> returns the number of lines in which the results matched the search string
+ 
+ - sort -> this command sorts the results of a search either alphabetically or numerically. It also sorts files, file contents, and directories. 
+*Syntax: $ sort <flag> {filename}* \
+sort -r -> the flag returns the results in reverse order\
+sort -v -> the flag does case insensitive sorting\
+sort -n -> the flag returns the results as per numerical order.
+ 
+- tail -> it is complementary to head command. The tail command, as the name implies, print the last N number of data of the given input. By default, it prints the last 10 lines of the specified files. If you give more than one filename, then data from each file precedes by its file name. 
+*Syntax: tail [OPTION]... [FILE]...*\
+ 
+
 
 ## Overview of Virtual Machine
 
