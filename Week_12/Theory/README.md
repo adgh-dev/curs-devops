@@ -29,6 +29,7 @@ The result is an efficient model that maximizes resources and works at the ever-
 ## Benefits od DevOps <a name="benefits"></a>
 
 1. Speed 
+
 ![image](https://user-images.githubusercontent.com/24647488/208228552-717fe828-42ea-4358-8d2a-0971e6771156.png) 
 
 With a flexible DevOps model, technology is optimized according to current lifecycle needs. In many cases, DevOps uses the latest machine learning and artificial intelligence technologies to achieve speed. 
