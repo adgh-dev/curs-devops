@@ -83,8 +83,8 @@ The result is an efficient model that maximizes resources and works at the ever-
 
 In this section, we will have a look at the most frequently used Linux commands that are used while working in DevOps.
 
-- ls -> this command lists all the contents in the current working directory.
-*Syntax: $ ls <flag> *\
+- ls -> this command lists all the contents in the current working directory.\
+*Syntax: $ ls {flag}*\
  ls <path name> -> By specifying the path after ls, the content in that path will be displayed\
  ls -l -> using ‘l’ flag, lists all the contents along with its owner settings, permissions & timestamp (long format)\
  ls -a -> using ‘a’ flag, lists all the hidden contents in the specified directory
