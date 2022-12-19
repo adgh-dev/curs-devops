@@ -145,13 +145,14 @@ Example: To change owner of the file: chown owner_name file_name
  
 - free -> command which displays the total amount of free space available along with the amount of memory used and swap memory in the system, and also the buffers used by the kernel.\
 *Syntax: $free [OPTION] - OPTION: refers to the options compatible with free command.*\
+ 
 As free displays the details of the memory-related to your system, its syntax doesn’t need any arguments to be passed but only options which you can use according to your wish. When no option is used then free command produces the columnar output as shown above where column:\
-  - total displays the total installed memory (MemTotal and SwapTotal e present in /proc/meminfo).\
-  - used displays the used memory.\
-  - free displays the unused memory.\
-  - shared displays the memory used by tmpfs(Shmen epresent in /proc/meminfo and displays zero in case not available).\
-  - buffers displays the memory used by kernel buffers.\
-  - cache displays the memory used by the page cache and slabs(Cached and Slab available in /proc/meminfo).\
+  - total displays the total installed memory (MemTotal and SwapTotal e present in /proc/meminfo).
+  - used displays the used memory.
+  - free displays the unused memory.
+  - shared displays the memory used by tmpfs(Shmen epresent in /proc/meminfo and displays zero in case not available).
+  - buffers displays the memory used by kernel buffers.
+  - cache displays the memory used by the page cache and slabs(Cached and Slab available in /proc/meminfo).
   - buffers/cache displays the sum of buffers and cache.
 ![image](https://user-images.githubusercontent.com/24647488/208404136-226df86f-4bf3-44ec-9f55-7c8cfb2f05c8.png)
  
@@ -170,12 +171,18 @@ Options for free command
  
 - ps -> Every process in Linux has a unique ID and can be seen using the command ps.
 *Syntax: $ sudo ps aux*
-![image](https://user-images.githubusercontent.com/24647488/208407456-39863b5a-8bbf-4a3b-ae1c-d4a4e29135b8.png)
+![image](https://user-images.githubusercontent.com/24647488/208407456-39863b5a-8bbf-4a3b-ae1c-d4a4e29135b8.png)\
 a = show processes for all users\
 u = display the process’s user/owner\
 x = also show processes not attached to a terminal
 
- 
+- kill -> is a built-in command which is used to terminate processes manually. This command sends a signal to a process that terminates the process.\
+*Syntax: $ kill -l -> to display all the available signals you can use below command option*
+![image](https://user-images.githubusercontent.com/24647488/208408376-18e8c4ff-3832-4de6-bf33-ee5d86f6bfec.png)\
+  - Negative PID values are used to indicate the process group ID. If you pass a process group ID then all the processes within that group will receive the signal.
+  - A PID of -1 is very special as it indicates all the processes except kill and init, which is the parent process of all processes on the system.
+  - To display a list of running processes use the command ps and this will show you running processes with their PID number. To specify which process should receive the kill signal we need to provide the PID.
+*kill pid: To show how to use a PID with the kill command. Syntax: $kill pid*
 
 ## Overview of Virtual Machine
 
