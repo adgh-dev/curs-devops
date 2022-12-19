@@ -115,7 +115,67 @@ sort -n -> the flag returns the results as per numerical order.
 - tail -> it is complementary to head command. The tail command, as the name implies, print the last N number of data of the given input. By default, it prints the last 10 lines of the specified files. If you give more than one filename, then data from each file precedes by its file name. 
 *Syntax: tail [OPTION]... [FILE]...*\
  
+- chown ->  is used to change the file Owner or group. Whenever you want to change ownership you can use chown command.
+*Syntax: chown [OPTION]… [OWNER][:[GROUP]] FILE… *\
+Example: To change owner of the file: chown owner_name file_name
+ 
+- chmod -> this command is used to change the access permissions of files and directories.
+*Syntax: chmod <permissions of user,group,others> {filename}*\
+4 – read permission\
+2 – write permission\
+1 – execute permission\
+0 – no permission\
+ 
+- ifconfig -> is used to configure the kernel-resident network interfaces. It is used at the boot time to set up the interfaces as necessary. After that, it is usually used when needed during debugging or when you need system tuning. Also, this command is used to assign the IP address and netmask to an interface or to enable or disable a given interface.
+*Syntax: ifconfig [...OPTIONS] [INTERFACE]*\
+    -a : This option is used to display all the interfaces available, even if they are down. *Syntax: ifconfig -a*\
+    -s : -s : Display a short list, instead of details. *Syntax: ifconfig -s*.\
+ 
+- cut ->  is used for extracting a portion of a file using columns and delimiters. If you want to list everything in a selected column, use the “-c” flag with cut command.For example, lets select the first two columns from our demo1.txt file.
+*Syntax: cut -c1-2 demo1.txt*
+ 
+- diff -> is used to find the difference between two files. This command analyses the files and prints the lines which are not similar.
+*Syntax: diff test.txt test1.txt*
+ 
+- history -> is used to view the previously executed command.
+*Syntax: history*
+ 
+- find -> is a command-line utility for walking a file hierarchy. It can be used to find files and directories and perform subsequent operations on them. It supports searching by file, folder, name, creation date, modification date, owner and permissions.
+*Syntax: find [where to start searching from]*
+ 
+- free -> command which displays the total amount of free space available along with the amount of memory used and swap memory in the system, and also the buffers used by the kernel.
+*Syntax: $free [OPTION] - OPTION: refers to the options compatible with free command.*\
+As free displays the details of the memory-related to your system, its syntax doesn’t need any arguments to be passed but only options which you can use according to your wish. When no option is used then free command produces the columnar output as shown above where column:\
+  - total displays the total installed memory (MemTotal and SwapTotal e present in /proc/meminfo).\
+  - used displays the used memory.\
+  - free displays the unused memory.\
+  - shared displays the memory used by tmpfs(Shmen epresent in /proc/meminfo and displays zero in case not available).\
+  - buffers displays the memory used by kernel buffers.\
+  - cache displays the memory used by the page cache and slabs(Cached and Slab available in /proc/meminfo).\
+  - buffers/cache displays the sum of buffers and cache.\
+![image](https://user-images.githubusercontent.com/24647488/208404136-226df86f-4bf3-44ec-9f55-7c8cfb2f05c8.png)
+ 
+Options for free command
 
+-b, – -bytes :It displays the memory in bytes.\
+-k, – -kilo :It displays the amount of memory in kilobytes(default).\
+-m, – -mega :It displays the amount of memory in megabytes.\
+-g, – -giga :It displays the amount of memory in gigabytes\
+
+- curl -> is a command-line tool to transfer data to or from a server, using any of the supported protocols (HTTP, FTP, IMAP, POP3, SCP, SFTP, SMTP, TFTP, TELNET, LDAP or FILE).
+*Syntax: curl [options] [URL...]* The most basic uses of curl is typing the command followed by the URL.\
+ 
+- df, du -> The df (disk free) command reports the amount of available disk space being used by file systems. The du (disk usage) command reports the sizes of directory trees inclusive of all of their contents and the sizes of individual files.
+*Syntax: To check in a human-readable format: $ sudo df -h*
+ 
+- ps -> Every process in Linux has a unique ID and can be seen using the command ps.
+*Syntax: $ sudo ps aux*
+![image](https://user-images.githubusercontent.com/24647488/208407456-39863b5a-8bbf-4a3b-ae1c-d4a4e29135b8.png)
+a = show processes for all users\
+u = display the process’s user/owner\
+x = also show processes not attached to a terminal\
+
+ 
 
 ## Overview of Virtual Machine
 
