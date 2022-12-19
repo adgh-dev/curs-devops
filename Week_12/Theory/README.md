@@ -26,7 +26,7 @@ The word "DevOps" is a mashup of "development’ and "operations" but it represe
 
 The result is an efficient model that maximizes resources and works at the ever-faster pace of the software development process, something that has become increasingly difficult to achieve with the traditional development model. In conclusion, a strong DevOps model enables companies to fix problems, grow users, and serve customers better by developing and iterating software products faster.
 
-## Benefits od DevOps <a name="benefits"></a>
+## Benefits of DevOps <a name="benefits"></a>
 
 ### 1. Speed 
 
