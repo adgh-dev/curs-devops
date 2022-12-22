@@ -43,7 +43,7 @@ Terraform comes pre-installed in Cloud Shell. With Terraform already installed, 
 ### Add Google Cloud provider
 1.	Create a directory called compute:
 ```
-mkdir compute
+mkdir compute && cd $_
 ```
 2.	Create the main.tf file:
 ```
@@ -618,7 +618,7 @@ terraform destroy
 
 ## Exercise 3 - Ansible Automation
 
-### Setup required infrastrucure using Terraform
+### Setup required infrastructure using Terraform
 
 For the next exercise, we need to setup the lab infrastructure for running Ansible playbooks. This will be comprised of an ansible-controller host and 3 web-server VMs for serving our application.
 
@@ -703,6 +703,8 @@ resource "google_compute_instance" "app-server-3" {
   }
 }
 ```
+
+<br />
 
 ## Exercise 4 - Jenkins Automation
 
