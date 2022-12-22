@@ -617,7 +617,9 @@ terraform destroy
 
 <br/>
 
-# Exercise 3 - Setup infrastructure for Ansible Automation
+## Exercise 3 - Ansible Automation 
+
+### Setup required infrastrucure using Terraform
 
 For the next exercise, we need to setup the lab infrastructure for running Ansible playbooks. This will be comprised of an ansible-controller host and 3 web-server VMs for serving our application.
 
