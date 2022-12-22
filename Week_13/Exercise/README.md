@@ -16,7 +16,7 @@ gcloud config list --format 'value(core.project)'
 ## Exercise 1 - Infrastrucutre as code with Terraform - Introduction
 
 ### Overview
-In this lab, you will use Terraform to create, update, and destroy Google Cloud resources. You will start by defining Google Cloud as the provider.
+In this exercise, you will use Terraform to create, update, and destroy Google Cloud resources. You will start by defining Google Cloud as the provider.
 You will then create a VM instance without mentioning the network to see how terraform parses the configuration code. You will then edit the code to add network and create a VM instance on Google Cloud.
 You will explore how to update the VM instance. You will edit the existing configuration to add tags and then edit the machine type. You will then execute terraform commands to destroy the resources created.
 
@@ -294,3 +294,333 @@ terraform destroy
 ```
 2.	Verify that the instance terraform no longer exists by navigating to the VM Instances on the Cloud Console.
 
+<br />
+
+## Exercise 2 - Terraform Variables and Dependencies
+
+### Overview
+In this exercise, you will create two VMs in the default network. We will use variables to define the VM's attributes at runtime and use output values to print a few resource attributes.
+We will then add a static IP address to the first VM to examine how terraform handles implicit dependencies. We will then create a GCS bucket by mentioning explicit dependency to the VM to examine how terraform handles explicit dependency.
+
+### Objectives
+In this lab, you learn how to perform the following tasks:
+- Use variables and output values
+- Observe implicit dependency
+- Create explicit resource dependency
+
+### Initialize Terraform
+Let us initialize Terraform by setting Google as the provider.
+1.	Open Cloud Shell and execute the following command to verify that terraform is installed.
+```
+terraform -version
+```
+The output should look like this (do not copy; this is example output):
+```
+Terraform v1.2.2
+Terraform comes pre-installed in Cloud Shell. With Terraform already installed, you can directly create infrastructure resources.
+```
+2.	Create a directory for your Terraform configuration and navigate to it by running the following command:
+```
+mkdir tfinfra && cd $_
+```
+3.	In Cloud Shell, click Open Editor to open Cloud Shell Editor.
+4.	Click Open in a new window button to leave the Editor open in a separate tab..
+5.	To create a new file in the tfinfra folder, right-click on tfinfra folder and click New File.
+6.	Name the new file provider.tf, and then click OK.
+7.	Add the following code into provider.tf:
+```
+  provider "google" {
+  project = "qwiklabs-gcp-03-0b4c3f9a4c2b"
+  region  = "us-east1"
+  zone    = "us-east1-b"
+}
+```
+8.	To save provider.tf, click File > Save.
+9.	Initialize Terraform by running the following commands:
+```
+terraform init
+```
+The output should look like this (do not copy; this is example output):
+```
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/google versions matching "4.15.0"...
+- Installing hashicorp/google v4.15.0...
+- Installed hashicorp/google v4.15.0 (signed by HashiCorp)
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+Terraform has been successfully initialized!
+Terraform has now installed the necessary plug-ins to interact with the Google Cloud API.
+```
+Authentication is not required for API. The Cloud Shell credentials give access to the project and APIs.
+
+### View Implicit Resource Dependency
+To demonstrate how Terraform infers an implicit dependency, we assign a static IP address to the VM instance.
+
+#### Create a VM instance
+Let us create a VM instance and parameterize its configuration by defining variables:
+1.	To create a new file, right-click on tfinfra folder and click New File.
+2.	Name the new file instance.tf, and then open it.
+3.	Copy the following code into instance.tf:
+```
+resource google_compute_instance "vm_instance" {
+name         = "${var.instance_name}"
+zone         = "${var.instance_zone}"
+machine_type = "${var.instance_type}"
+boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+      }
+  }
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+    }
+  }
+}
+```
+4.	To save instance.tf, click File > Save.
+
+#### Create variables
+1.	Right-click on tfinfra folder and click New File to create a new file for variables.
+2.	Name the new file variables.tf, and then click OK.
+3.	Add the following properties to variables.tf:
+```
+variable "instance_name" {
+  type        = string
+  description = "Name for the Google Compute instance"
+}
+variable "instance_zone" {
+  type        = string
+  description = "Zone for the Google Compute instance"
+}
+variable "instance_type" {
+  type        = string
+  description = "Type of the Google Compute instance"
+  default     = "n1-standard-1"
+  }
+```
+By giving instance_type a default value, you make the variable optional. The instance_name, and instance_zone are required, and you will define them at run time.
+4.	To save variable.tf, click File > Save.
+
+#### Create output values
+1.	Right-click on tfinfra folder and click New File to create a new file for outputs.
+2.	Name the new file outputs.tf, and then click OK.
+3.	Add the following properties to outputs.tf:
+```
+output "network_IP" {
+  value = google_compute_instance.vm_instance.instance_id
+  description = "The internal ip address of the instance"
+}
+output "instance_link" {
+  value = google_compute_instance.vm_instance.self_link
+  description = "The URI of the created resource."
+}
+```
+4.	To save outputs.tf, click File > Save.
+
+#### Assign a static IP
+1.	Now add to your configuration by assigning a static IP to the VM instance in instance.tf
+```
+resource "google_compute_address" "vm_static_ip" {
+  name = "terraform-static-ip"
+}
+```
+This should look familiar from the earlier example of adding a VM instance resource, except this time you're creating a google_compute_address resource type. This resource type allocates a reserved IP address to your project.
+2.	Update the network_interface configuration for your instance like so:
+```
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+      nat_ip = google_compute_address.vm_static_ip.address
+    }
+  }
+```
+The final code is as show below.
+```
+ resource "google_compute_address" "vm_static_ip" {
+  name = "terraform-static-ip"
+}
+ resource google_compute_instance "vm_instance" {
+name         = "${var.instance_name}"
+zone         = "${var.instance_zone}"
+machine_type = "${var.instance_type}"
+boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+      }
+  }
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+      nat_ip = google_compute_address.vm_static_ip.address
+    }
+  }
+}
+```
+3.	Initialize terraform by running the following command.
+```
+terraform init
+```
+4.	Run the following command to preview the resources created.
+```
+terraform plan
+```
+5.	If prompted, enter the details for the instance creation as shown below:
+- var.instance_name: myinstance
+- var.instance_zone: us-east1-b
+6.	Run the following command to view the order of resource creation.
+```
+terraform apply
+```
+7.	If prompted, enter the details for the instance creation as shown below:
+- var.instance_name: myinstance
+- var.instance_zone: us-east1-b
+8.	Confirm the planned actions by typing yes.
+Note: Observe that Terraform handles implicit dependency automatically by creating a static IP address before the instance.
+```
+google_compute_address.vm_static_ip: Creating...
+google_compute_address.vm_static_ip: Creation complete after 2s [id=projects/qwiklabs-gcp-03-4662a5b49176/regions/us-east1/addresses/terraform-static-ip]
+google_compute_instance.vm_instance: Creating...
+google_compute_instance.vm_instance: Still creating... [10s elapsed]
+google_compute_instance.vm_instance: Creation complete after 15s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/us-east1-b/instances/myinstance]
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+```
+
+#### Verify on Cloud Console
+In the Cloud Console, verify that the resources were created.
+1.	In the Cloud Console, on the Navigation menu (three horizontal lines on top left), click Compute Engine > VM instances.
+2.	View that an instance named `myinstance` is created.  
+3.	Verify the static IP address. On the Navigation menu, click VPC networks > IP addresses > External IP addresses.  
+
+### Create Explicit Dependency
+Explicit dependencies are used to inform dependencies between resources that are not visible to Terraform. In this example, consider that you will run on your instance that expects to use a specific Cloud Storage bucket, but that dependency is configured inside the application code and thus not visible to Terraform. In that case, you can use depends_on to explicitly declare the dependency.
+1.	To create a new file, right-click on tfinfra folder and click New File.
+2.	Name the new file `exp.tf`, and then click OK.
+3.	Add a Cloud Storage bucket and an instance with an explicit dependency on the bucket by adding the following base code into exp.tf:
+```
+# Create a new instance that uses the bucket
+resource "google_compute_instance" "another_instance" {
+  name         = "terraform-instance-2"
+  machine_type = "f1-micro"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+  # Tells Terraform that this VM instance must be created only after the
+  # storage bucket has been created.
+  depends_on = [google_storage_bucket.example_bucket]
+}
+```
+4.	Add the following code to create a bucket.
+```
+# New resource for the storage bucket our application will use.
+resource "google_storage_bucket" "example_bucket" {
+  name     = "<UNIQUE-BUCKET-NAME>"
+  location = "US"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
+```
+Note: Storage buckets must be globally unique. Because of this, you will need to replace UNIQUE-BUCKET-NAME with a unique, valid name for a bucket. Using the project name and the date is usually a good way to create a unique bucket name.
+Notice that in our code the VM instance configuration is added before the GCS bucket. When executing Terraform apply you will notice that the order that resources are defined in a terraform configuration file has no effect on how Terraform applies your changes.
+The final code is as show below:
+```
+resource "google_compute_instance" "another_instance" {
+  name         = "terraform-instance-2"
+  machine_type = "f1-micro"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+  # Tells Terraform that this VM instance must be created only after the
+  # storage bucket has been created.
+  depends_on = [google_storage_bucket.example_bucket]
+}
+resource "google_storage_bucket" "example_bucket" {
+  name     = "<UNIQUE-BUCKET-NAME>"
+  location = "US"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
+```
+5.	To save exp.tf, click File > Save.
+6.	Run the following command to preview the resources created.
+```
+terraform plan
+```
+If prompted, enter the details for the instance creation as shown below:
+- var.instance_name: myinstance
+- var.instance_zone: us-east1-b
+7.	Run the following command to view the order of resource creation.
+```
+terraform apply
+```
+If prompted, enter the details for the instance creation as shown below:
+- var.instance_name: myinstance
+- var.instance_zone: us-east1-b
+8.	Confirm the planned actions by typing `yes`.
+9.	Observe that due explicit dependency, the compute instance is created after the creation of the Cloud Storage Bucket.
+```
+Enter a value: yes
+google_storage_bucket.example_bucket: Creating...
+google_storage_bucket.example_bucket: Creation complete after 1s [id=qwiklabs-gcp-03-4662a5b49176-abc]
+google_compute_instance.another_instance: Creating...
+google_compute_instance.another_instance: Still creating... [10s elapsed]
+google_compute_instance.another_instance: Creation complete after 14s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/us-east1-b/instances/terraform-instance-2]
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+```
+
+#### Verify on Cloud Console
+In the Cloud Console, verify that the resources were created.
+1.	In the Cloud Console, on the Navigation menu, click Compute Engine > VM instances.
+2.	View the terraform-instance-2 instance created.
+3.	Verify the Cloud Storage bucket created. On the Navigation menu, click Cloud Storage.
+
+### View Dependency Graph
+1.	To view resource dependency graph of the resource created, execute the following command
+```
+terraform graph | dot -Tsvg > graph.svg
+```
+2.	Switch to the editor and notice a file called graph.svg created. Click the file to view the dependency graph.
+
+### Destroy the infrastructure
+You have now seen how to build and change infrastructure. Before moving on to creating multiple resources and showing resource dependencies, you will see how to completely destroy your Terraform-managed infrastructure.
+1.	Execute the following command. Answer yes to execute this plan and destroy the infrastructure:
+```
+terraform destroy
+```
+2.	Verify that the instance terraform no longer exists by navigating to the VM Instances on the Cloud Console.
+
+<br />
+
+### Review
+In this exercise, you created a VM instance with a static IP address to view how implicit resource dependencies are handled with Terraform. You then created an explicit dependency by adding the depend_on argument so that you can create a GCS bucket before creating a VM instance. You also viewed the dependency graph that terraform uses to trace the order of resource creation.
+
+Before moving on, make sure all remaining resources created with terraform during this exercise are removed, so we can work on a clean environment in the next step.
+1.	Execute the following command. Answer yes to execute this plan and destroy the infrastructure:
+```
+terraform destroy
+```
+2.	Verify that the instances, static IPs and storage buckets created no longer exists by navigating to their respective areas on the Cloud Console.
