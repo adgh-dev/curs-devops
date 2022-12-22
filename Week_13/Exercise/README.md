@@ -5,15 +5,14 @@ gcloud config list --format 'value(core.project)'
 
 ## Table of contents
 
-- [Exercise 1 - Create a VM in Google Cloud](#exercise-1---create-a-vm-in-google-cloud)
-- [Exercise 2 - Deploy the quote-service application in VM](#exercise-2---deploy-the-quote-service-application-in-vm)
-- [Exercise 3 - Install and configure Docker on a Debian 11 host](#exercise-3---install-and-configure-docker-on-a-debian-11-host)
-- [Exercise 4 - Build and deploy the application in a Docker container](#exercise-4---build-and-deploy-the-application-in-a-docker-container)
-- [Exercise 5 - Deploy quote-service as a serverless application](#exercise-5---deploy-quote-service-as-a-serverless-application)
+- [Exercise 1 - Infrastrucutre as code with Terraform Introduction](#exercise-1---infrastrucutre-as-code-with-terraform-introduction)
+- [Exercise 2 - Terraform Variables and Dependencies](#exercise-2---terraform-variables-and-dependencies)
+- [Exercise 3 - Ansible Automation](#exercise-3---ansible-automation)
+- [Exercise 4 - Jenkins Automation](#exercise-4---jenkins-automation)
 
 <br/>
 
-## Exercise 1 - Infrastrucutre as code with Terraform - Introduction
+## Exercise 1 - Infrastrucutre as code with Terraform Introduction
 
 ### Overview
 In this exercise, you will use Terraform to create, update, and destroy Google Cloud resources. You will start by defining Google Cloud as the provider.
@@ -617,7 +616,7 @@ terraform destroy
 
 <br/>
 
-## Exercise 3 - Ansible Automation 
+## Exercise 3 - Ansible Automation
 
 ### Setup required infrastrucure using Terraform
 
@@ -628,7 +627,7 @@ Make sure all lab infrastrucure from previous exercises is cleaned up (`terrafor
 mkdir ansible-tf && cd $_
 ```
 
-Create a new main.tf file which defines the 4 VMs (one ansible controller and 3 app hosts/web servers):
+Create a new main.tf file which defines all 4 VMs (one ansible controller and 3 app hosts/web servers):
 
 ```
 terraform {
@@ -704,3 +703,7 @@ resource "google_compute_instance" "app-server-3" {
   }
 }
 ```
+
+## Exercise 4 - Jenkins Automation
+
+### Install Jenkins on ansible-controller VM
