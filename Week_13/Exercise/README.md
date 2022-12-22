@@ -605,16 +605,6 @@ terraform graph | dot -Tsvg > graph.svg
 ```
 2.	Switch to the editor and notice a file called graph.svg created. Click the file to view the dependency graph.
 
-### Destroy the infrastructure
-You have now seen how to build and change infrastructure. Before moving on to creating multiple resources and showing resource dependencies, you will see how to completely destroy your Terraform-managed infrastructure.
-1.	Execute the following command. Answer yes to execute this plan and destroy the infrastructure:
-```
-terraform destroy
-```
-2.	Verify that the instance terraform no longer exists by navigating to the VM Instances on the Cloud Console.
-
-<br />
-
 ### Review
 In this exercise, you created a VM instance with a static IP address to view how implicit resource dependencies are handled with Terraform. You then created an explicit dependency by adding the depend_on argument so that you can create a GCS bucket before creating a VM instance. You also viewed the dependency graph that terraform uses to trace the order of resource creation.
 
@@ -624,3 +614,91 @@ Before moving on, make sure all remaining resources created with terraform durin
 terraform destroy
 ```
 2.	Verify that the instances, static IPs and storage buckets created no longer exists by navigating to their respective areas on the Cloud Console.
+
+<br/>
+
+# Exercise 3 - Setup infrastructure for Ansible Automation
+
+For the next exercise, we need to setup the lab infrastructure for running Ansible playbooks. This will be comprised of an ansible-controller host and 3 web-server VMs for serving our application.
+
+Make sure all lab infrastrucure from previous exercises is cleaned up (`terraform destroy` in corresponding paths) and create a new folder:
+```
+mkdir ansible-tf && cd $_
+```
+
+Create a new main.tf file which defines the 4 VMs (one ansible controller and 3 app hosts/web servers):
+
+```
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+}
+
+provider "google" {
+  region  = "europe-central2"
+  zone    = "europe-central2-a"
+}
+
+resource "google_compute_instance" "ansible-controller" {
+  name         = "ansible-controller"
+  machine_type = "e2-medium"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+}
+
+resource "google_compute_instance" "app-server-1" {
+  name         = "app-server-1"
+  machine_type = "e2-medium"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+}
+
+resource "google_compute_instance" "app-server-2" {
+  name         = "app-server-2"
+  machine_type = "e2-medium"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+}
+
+resource "google_compute_instance" "app-server-3" {
+  name         = "app-server-3"
+  machine_type = "e2-medium"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+}
+```
