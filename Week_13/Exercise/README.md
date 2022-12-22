@@ -711,9 +711,9 @@ resource "google_compute_instance" "app-server-3" {
 ### Install Jenkins on ansible-controller VM
 
 #### Step 1. Update the System
-Since we have a fresh installation of Debian 11, we need to update the packages to its latest versions available:
+Since we have a fresh installation of Debian 11, we need to update the package repository to its latest versions available:
 ```
-sudo apt update -y && sudo apt upgrade -y
+sudo apt update -y
 ```
 
 #### Step 2. Install Java
@@ -725,7 +725,7 @@ To check whether Java is installed execute the following command:
 ```
 java -version
 ```
-You should receive the following output:
+You should receive a similar output:
 ```
 root@vps:~# java -version
 openjdk version "11.0.14" 2022-01-18
@@ -742,7 +742,7 @@ sudo apt-key add jenkins.io.key
 
 Add the official jenkins apt repository to the local system:
 ```
-echo "deb https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list
+echo "deb https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
 ```
 
 Update the repository before you install Jenkins:
@@ -786,15 +786,14 @@ Feb 12 04:50:43 test.vps jenkins[37526]: Starting Jenkins Automation Server: jen
 Feb 12 04:50:43 test.vps systemd[1]: Started LSB: Start Jenkins at boot time.
 ```
 
-Another way to check if Jenkins, is active and running is to check port 8080
+Another way to check if Jenkins, is active is checking the running processes:
 ```
-netstat -tunlp | grep 8080
+ps auxwww | grep jenkins
 ```
 
 You should receive the following output:
 ```
-root@vps:~# netstat -tunlp | grep 8080
-tcp6       0      0 :::8080                 :::*                    LISTEN      37591/jenkins: /usr
+jenkins     5914 68.9 29.8 3647404 1201024 ?     Ssl  19:19   0:56 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
 ```
 
 #### Step 5. Finish Jenkins Installation
@@ -814,3 +813,7 @@ e5bcfa4486dd412f988a4762a8535aa3
 ```
 
 Copy the administrator password, paste in the input of the Jenkins interface and click on the “Continue” button.
+
+Go through the Jenkins install wizard with default values until you get to the ```Jenkins is ready!``` screen.
+
+### Create your first Jenkins job
