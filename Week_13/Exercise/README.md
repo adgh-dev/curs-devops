@@ -709,3 +709,108 @@ resource "google_compute_instance" "app-server-3" {
 ## Exercise 4 - Jenkins Automation
 
 ### Install Jenkins on ansible-controller VM
+
+#### Step 1. Update the System
+Since we have a fresh installation of Debian 11, we need to update the packages to its latest versions available:
+```
+sudo apt update -y && sudo apt upgrade -y
+```
+
+#### Step 2. Install Java
+Jenkins is written in Java, and that is why we need the Java installed on our system along with some dependencies:
+```
+sudo apt install openjdk-11-jdk default-jre gnupg2 apt-transport-https wget -y
+```
+To check whether Java is installed execute the following command:
+```
+java -version
+```
+You should receive the following output:
+```
+root@vps:~# java -version
+openjdk version "11.0.14" 2022-01-18
+OpenJDK Runtime Environment (build 11.0.14+9-post-Debian-1deb11u1)
+OpenJDK 64-Bit Server VM (build 11.0.14+9-post-Debian-1deb11u1, mixed mode, sharing)
+```
+
+#### Step 3. Add Jenkins GPG key and PPA
+By default the repository of Debian 11, does not contain Jenkins, so we need to add manually the key and the PPA.
+```
+wget https://pkg.jenkins.io/debian-stable/jenkins.io.key
+sudo apt-key add jenkins.io.key
+```
+
+Add the official jenkins apt repository to the local system:
+```
+echo "deb https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list
+```
+
+Update the repository before you install Jenkins:
+```
+sudo apt update -y
+```
+Once, the system is updated with the latest packages, install Jenkins.
+
+#### Step 4. Install Jenkins
+```
+sudo apt-get install jenkins -y
+```
+After the installation, start and enable the Jenkins service, in order for the service to start automatically after system reboot.
+```
+sudo systemctl start jenkins && sudo systemctl enable jenkins
+```
+
+To check the status of the service execute the following command:
+```
+sudo systemctl status jenkins
+```
+
+You should receive the following output:
+```
+root@vps:~# sudo systemctl status jenkins
+● jenkins.service - LSB: Start Jenkins at boot time
+     Loaded: loaded (/etc/init.d/jenkins; generated)
+     Active: active (exited) since Sat 2022-02-12 04:50:43 EST; 1min 35s ago
+       Docs: man:systemd-sysv-generator(8)
+      Tasks: 0 (limit: 4678)
+     Memory: 0B
+        CPU: 0
+     CGroup: /system.slice/jenkins.service
+
+Feb 12 04:50:41 test.vps systemd[1]: Starting LSB: Start Jenkins at boot time...
+Feb 12 04:50:41 test.vps jenkins[37526]: Correct java version found
+Feb 12 04:50:42 test.vps su[37564]: (to jenkins) root on none
+Feb 12 04:50:42 test.vps su[37564]: pam_unix(su-l:session): session opened for user jenkins(uid=114) by (uid=0)
+Feb 12 04:50:42 test.vps su[37564]: pam_unix(su-l:session): session closed for user jenkins
+Feb 12 04:50:43 test.vps jenkins[37526]: Starting Jenkins Automation Server: jenkins.
+Feb 12 04:50:43 test.vps systemd[1]: Started LSB: Start Jenkins at boot time.
+```
+
+Another way to check if Jenkins, is active and running is to check port 8080
+```
+netstat -tunlp | grep 8080
+```
+
+You should receive the following output:
+```
+root@vps:~# netstat -tunlp | grep 8080
+tcp6       0      0 :::8080                 :::*                    LISTEN      37591/jenkins: /usr
+```
+
+#### Step 5. Finish Jenkins Installation
+After successful installation we can finish the installation by accessing the Jenkins Web Interface:
+
+http://YourServerIPaddress:8080
+
+
+The Jenkins home page is asking the administrator in the order to be unlocked. To find the administrator password execute the following command:
+```
+cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+The output of the administrator password will be as described below:
+```
+root@vps:~# cat /var/lib/jenkins/secrets/initialAdminPassword
+e5bcfa4486dd412f988a4762a8535aa3
+```
+
+Copy the administrator password, paste in the input of the Jenkins interface and click on the “Continue” button.
