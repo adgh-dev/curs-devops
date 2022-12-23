@@ -1,6 +1,3 @@
-Get project id:
-gcloud config list --format 'value(core.project)'
-
 # Week 13 - Continous deployment exercises
 
 ## Table of contents
@@ -110,7 +107,9 @@ terraform plan
 │ 15: resource "google_compute_instance" "terraform" {
 │
 │ At least 1 "network_interface" blocks are required.
+```
 5.	Now add the network by including the following code segment to the google_compute_instance block.
+```
 network_interface {
     network = "default"
     access_config {
@@ -212,7 +211,7 @@ Terraform used the selected providers to generate the following execution plan. 
 Terraform will perform the following actions:
   # google_compute_instance.terraform will be updated in-place
   ~ resource "google_compute_instance" "terraform" {
-        id                   = "projects/qwiklabs-gcp-00-da04aeabe9ab/zones/us-central1-c/instances/terraform"
+        id                   = "projects/example-project-id/zones/us-central1-c/instances/terraform"
         name                 = "terraform"
       ~ tags                 = [
           + "dev",
@@ -329,10 +328,14 @@ mkdir tfinfra && cd $_
 7.	Add the following code into provider.tf:
 ```
   provider "google" {
-  project = "qwiklabs-gcp-03-0b4c3f9a4c2b"
+  project = "<REPLACE_WITH_PROJECT_ID>"
   region  = "us-east1"
   zone    = "us-east1-b"
 }
+```
+You can find your own project id by running the following command in Cloud Shell:
+```
+gcloud config list --format 'value(core.project)'
 ```
 8.	To save provider.tf, click File > Save.
 9.	Initialize Terraform by running the following commands:
@@ -370,7 +373,7 @@ zone         = "${var.instance_zone}"
 machine_type = "${var.instance_type}"
 boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10"
+      image = "debian-cloud/debian-11"
       }
   }
  network_interface {
@@ -484,10 +487,10 @@ terraform apply
 Note: Observe that Terraform handles implicit dependency automatically by creating a static IP address before the instance.
 ```
 google_compute_address.vm_static_ip: Creating...
-google_compute_address.vm_static_ip: Creation complete after 2s [id=projects/qwiklabs-gcp-03-4662a5b49176/regions/us-east1/addresses/terraform-static-ip]
+google_compute_address.vm_static_ip: Creation complete after 2s [id=projects/example-project-id/regions/us-east1/addresses/terraform-static-ip]
 google_compute_instance.vm_instance: Creating...
 google_compute_instance.vm_instance: Still creating... [10s elapsed]
-google_compute_instance.vm_instance: Creation complete after 15s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/us-east1-b/instances/myinstance]
+google_compute_instance.vm_instance: Creation complete after 15s [id=projects/example-project-id/zones/us-east1-b/instances/myinstance]
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ```
 
@@ -584,10 +587,10 @@ If prompted, enter the details for the instance creation as shown below:
 ```
 Enter a value: yes
 google_storage_bucket.example_bucket: Creating...
-google_storage_bucket.example_bucket: Creation complete after 1s [id=qwiklabs-gcp-03-4662a5b49176-abc]
+google_storage_bucket.example_bucket: Creation complete after 1s [id=example-project-id]
 google_compute_instance.another_instance: Creating...
 google_compute_instance.another_instance: Still creating... [10s elapsed]
-google_compute_instance.another_instance: Creation complete after 14s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/us-east1-b/instances/terraform-instance-2]
+google_compute_instance.another_instance: Creation complete after 14s [id=projects/example-project-id/zones/us-east1-b/instances/terraform-instance-2]
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ```
 
@@ -819,3 +822,4 @@ Go through the Jenkins install wizard with default values until you get to the `
 ### Create your first Jenkins job
 
 ...TBD
+
