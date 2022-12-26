@@ -649,6 +649,7 @@ provider "google" {
 resource "google_compute_instance" "ansible-controller" {
   name         = "ansible-controller"
   machine_type = "e2-medium"
+  tags         = ["jenkins", "ansible-controller"]
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -664,6 +665,7 @@ resource "google_compute_instance" "ansible-controller" {
 resource "google_compute_instance" "app-server-1" {
   name         = "app-server-1"
   machine_type = "e2-medium"
+  tags         = ["app-server"]
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -679,6 +681,7 @@ resource "google_compute_instance" "app-server-1" {
 resource "google_compute_instance" "app-server-2" {
   name         = "app-server-2"
   machine_type = "e2-medium"
+  tags         = ["app-server"]
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -694,6 +697,7 @@ resource "google_compute_instance" "app-server-2" {
 resource "google_compute_instance" "app-server-3" {
   name         = "app-server-3"
   machine_type = "e2-medium"
+  tags         = ["app-server"]
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -704,6 +708,35 @@ resource "google_compute_instance" "app-server-3" {
     access_config {
     }
   }
+}
+
+# define firewall rules
+resource "google_compute_firewall" "jenkins" {
+  name        = "my-firewall-rule"
+  network     = "default"
+  description = "Creates firewall rule targeting jenkins server"
+
+  allow {
+    protocol  = "tcp"
+    ports     = ["8080"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["jenkins"]
+}
+
+resource "google_compute_firewall" "app-server" {
+  name        = "app-server"
+  network     = "default"
+  description = "Creates firewall rule for app-server hosts"
+
+  allow {
+    protocol  = "tcp"
+    ports     = ["8220"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["app-server"]
 }
 ```
 
@@ -716,13 +749,13 @@ resource "google_compute_instance" "app-server-3" {
 #### Step 1. Update the System
 Since we have a fresh installation of Debian 11, we need to update the package repository to its latest versions available:
 ```
-sudo apt update -y
+sudo apt update
 ```
 
 #### Step 2. Install Java
 Jenkins is written in Java, and that is why we need the Java installed on our system along with some dependencies:
 ```
-sudo apt install openjdk-11-jdk default-jre gnupg2 apt-transport-https wget -y
+sudo apt install openjdk-11-jre -y
 ```
 To check whether Java is installed execute the following command:
 ```
@@ -739,24 +772,22 @@ OpenJDK 64-Bit Server VM (build 11.0.14+9-post-Debian-1deb11u1, mixed mode, shar
 #### Step 3. Add Jenkins GPG key and PPA
 By default the repository of Debian 11, does not contain Jenkins, so we need to add manually the key and the PPA.
 ```
-wget https://pkg.jenkins.io/debian-stable/jenkins.io.key
-sudo apt-key add jenkins.io.key
-```
-
-Add the official jenkins apt repository to the local system:
-```
-echo "deb https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
 ```
 
 Update the repository before you install Jenkins:
 ```
-sudo apt update -y
+sudo apt update
 ```
 Once, the system is updated with the latest packages, install Jenkins.
 
 #### Step 4. Install Jenkins
 ```
-sudo apt-get install jenkins -y
+sudo apt install jenkins -y
 ```
 After the installation, start and enable the Jenkins service, in order for the service to start automatically after system reboot.
 ```
