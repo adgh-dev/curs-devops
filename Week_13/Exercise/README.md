@@ -712,7 +712,7 @@ resource "google_compute_instance" "app-server-3" {
 
 # define firewall rules
 resource "google_compute_firewall" "jenkins" {
-  name        = "my-firewall-rule"
+  name        = "jenkins"
   network     = "default"
   description = "Creates firewall rule targeting jenkins server"
 
