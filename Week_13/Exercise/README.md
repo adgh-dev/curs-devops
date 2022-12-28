@@ -2,7 +2,7 @@
 
 ## Table of contents
 
-- [Exercise 1 - Infrastrucutre as code with Terraform Introduction](#exercise-1---infrastrucutre-as-code-with-terraform-introduction)
+- [Exercise 1 - Infrastructure as code with Terraform Introduction](#exercise-1---infrastructure-as-code-with-terraform-introduction)
 - [Exercise 2 - Terraform Variables and Dependencies](#exercise-2---terraform-variables-and-dependencies)
 - [Exercise 3 - Ansible Automation](#exercise-3---ansible-automation)
 - [Exercise 4 - Jenkins Automation](#exercise-4---jenkins-automation)
