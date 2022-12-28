@@ -9,7 +9,7 @@
 
 <br/>
 
-## Exercise 1 - Infrastrucutre as code with Terraform Introduction
+## Exercise 1 - Infrastructure as code with Terraform Introduction
 
 ### Overview
 In this exercise, you will use Terraform to create, update, and destroy Google Cloud resources. You will start by defining Google Cloud as the provider.
