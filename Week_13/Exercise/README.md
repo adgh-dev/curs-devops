@@ -740,6 +740,71 @@ resource "google_compute_firewall" "app-server" {
 }
 ```
 
+### Configure Ansible Server
+
+SSH to the ansible-controller VM to start the installation process.
+
+Make sure Python `pip3` module is installed on host (does not come by default with Debian 11):
+```
+sudo apt install python3-pip
+```
+
+Go ahead with ansible installation using pip3:
+```
+sudo pip3 install ansible
+```
+
+Make sure ansible is installed correctly and available to non-root user:
+```
+ansible --version
+```
+
+As mentioned in the theory part, Ansible uses ssh for connecting the controller to the managed nodes and running modules or ad-hoc commands. This requires the ssh keys are configured correctly at the OS level to allow ssh access.
+```
+ssh-keygen
+```
+Press `enter` on all prompts to accept default values and not use any passphrase.
+
+Once the ssh public-private key pair is generated on the ansible-controller, you need to add the public key to each of the app-server VMs. This step is mandatory, otherwise ssh connections will be rejected - Ansible itself will not work.
+
+Copy the contents of the public key on the ansible-controller VM in your clipboard:
+```
+cat ~/.ssh/id_rsa.pub
+```
+
+On `each` of the app-servers you need to add the ansible-controller's public key (the contents of your clipboard) to the authorized_keys file:
+```
+mkdir -p ~/.ssh
+echo ANSIBLE_CONTROLLER_PUBLIC_KEY >> ~/.ssh/authorized_keys
+```
+In the above command, substitute the `ANSIBLE_CONTROLLER_PUBLIC_KEY` with the output from the cat ~/.ssh/id_rsa.pub command that you executed on your local system. It should start with ssh-rsa AAAA... or similar.
+
+If everything worked correctly you are now done with the app-server VMs setup. From now on, all the following commands will be executed on `ansible-controller`.
+
+To test the ssh connection, you can try running a remote command on one or each of the app-servers. 
+```
+sh app-server-1 hostname
+```
+The `hostname` command is executed remotely and should display the correct host - app-server-1 in our example.
+
+Now that we are done with ssh setup, we can go ahead with the Ansible configuration itself.
+
+Create a new folder where you will place the local inventory file (otherwise ansible will try to use the default /etc/ansible/hosts) and ansible playbooks:
+```
+mkdir ~/ansible && cd $_
+```
+
+Create an inventory file and add the hostnames or IP addresses of the remote machines to /etc/ansible/hosts. Use the `internal` IP addresses, not the public ones:
+```
+cat <<EOF > hosts
+[web-servers]
+app-server-1
+app-server-2
+app-server-3
+EOF
+```
+
+
 <br />
 
 ## Exercise 4 - Jenkins Automation
@@ -853,4 +918,5 @@ Go through the Jenkins install wizard with default values until you get to the `
 ### Create your first Jenkins job
 
 ...TBD
+
 
