@@ -3,9 +3,8 @@
 ## Table of contents
 
 - [Infrastructure as code - Terraform](#infrastructure-as-code---terraform)
-- [Overview of Jenkins](#overview-of-jenkins)
 - [Overview of Ansible](#overview-of-ansible)
-- [What is DevOps?](#what-is-devops?)
+- [Overview of Jenkins](#overview-of-jenkins)
 
 ## Infrastructure as code - Terraform
 
@@ -121,6 +120,49 @@ resource "aws_subnet" "az" {
 }
 ```
 
+## Overview of Ansible
+
+### What is Ansible?
+Ansible is an open source automation and orchestration tool for software provisioning, configuration management, and software deployment. Ansible can easily run and configure Unix-like systems as well as Windows systems to provide infrastructure as code. It contains its own declarative programming language for system configuration and management.
+
+Ansible is popular for its simplicity of installation, ease of use in what concerns the connectivity to clients, its lack of agent for Ansible clients and the multitude of skills. It functions by connecting via SSH to the clients, so it doesn’t need a special agent on the client-side, and by pushing modules to the clients, the modules are then executed locally on the client-side and the output is pushed back to the Ansible server.
+
+Since it uses SSH, it can very easily connect to clients using SSH-Keys, simplifying though the whole process. Client details, like hostnames or IP addresses and SSH ports, are stored in files called inventory files. Once you have created an inventory file and populated it, ansible can use it.
+
+### How does Ansible work?
+Ansible uses the concepts of control and managed nodes. It connects from the control node, any machine with Ansible installed, to the managed nodes sending commands and instructions to them.
+
+The units of code that Ansible executes on the managed nodes are called modules. Each module is invoked by a task, and an ordered list of tasks together forms a playbook. Users write playbooks with tasks and modules to define the desired state of the system.
+
+The managed machines are represented in a simplistic inventory file that groups all the nodes into different categories.
+
+Ansible leverages a very simple language, YAML, to define playbooks in a human-readable data format that is really easy to understand from day one. Even more, Ansible doesn’t require the installation of any extra agents on the managed nodes so it’s simple to start using it.
+
+Typically, the only thing a user needs is a terminal to execute Ansible commands and a text editor to define the configuration files.
+
+### Basic Concepts & Terms
+
+- Ansible Server (controller): The machine where Ansible is installed and from which all tasks and playbooks will be ran.
+
+- Host: A remote machine managed by Ansible.
+
+- Group: Several hosts grouped together that share a common attribute.
+
+- Inventory: A collection of all the hosts and groups that Ansible manages. Could be a static file in the simple cases or we can pull the inventory from remote sources, such as cloud providers.
+
+- Modules: Units of code that Ansible sends to the remote nodes for execution. Basically, a module is a command or set of similar Ansible commands meant to be executed on the client-side.
+
+- Tasks: Units of action that combine a module and its arguments along with some other parameters.
+
+- Playbooks: An ordered list of tasks along with its necessary parameters that define a recipe to configure a system.
+
+- Roles: Redistributable units of organization that allow users to share automation code easier.
+
+### Orientation to the Lab Environment
+
+![classroom](https://docs.ansible.com/ansible/latest/_images/ansible_basic.svg)
+
+
 
 ## Overview of Jenkins
 
@@ -135,95 +177,3 @@ resource "aws_subnet" "az" {
 ### Jenkins User Interface
 
 ![jenkins_ui](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/jenkins_ui.PNG)
-
-## Overview of Ansible
-
-- Open source automation platform
-- Agentless
-- Desired end state
-- Idempotency
-- Human-readable automation
-
-> Playbook -> Play -> Task -> Module
-
-### Orientation to the Classroom Environment
-
-![classroom](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/classroom.PNG)
-
-### Ansible Inventory
-
-- Static inventory (groups, :children, implicit localhost) 
-- Default groups: all (without the default: localhost), ungrouped
-
-### Ansible Configuration Files
-
-- Three locations: /etc/ansible/ansible.cfg, ~/.ansible.cfg, ./ansible.cfg (the recommended location for testing)
-- Mostly used sections: [defaults], [privilege_escalation], [ssh_connection]
-
-### Variables in playbooks
-
-- vars:
-![vars](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/vars.png)
-
-- vars_files:
-![vars_files](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/vars_files.png)
-
-### Gathering facts
-
-- Facts = variables that are automatically discovered by Ansible on a managed host.
-
-Example of facts gathered from a managed host: the host name, the IP addresses, the version of the operating system, the available disk space, memory
-
-### Implementing Task Control
-
-- Loops: with_items, with_nested (loops inside of loops), with_fileglob
-> Note: with_X deprecated, use loop instead
-- Running tasks conditionally: when
-- Implementing tags: --tags and --skip-tags
-
-### Handlers
-
-- Tasks that respond to a notification triggered by other tasks (using notify statement)
-- Globally-unique name
-- Ansible notifies handlers only if the task acquires the CHANGED status
-- If no task notifies the handler by name -> it will not run
-- If one or more tasks notify the handler -> it will run ONCE, AFTER all the tasks in the play are completed ( unless - meta: flush_handlers) 
-
-### Ansible blocks and Error Handling
-
-Blocks= clauses that logically group tasks
-
-- block : main tasks to run
-- rescue: tasks that will be run if the tasks in the block clause fails
-- always: tasks that will run independently of the result of the other clauses
-
-![block](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/block.png)
-
-### Role structure
-
-![role](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/role.PNG)
-
-### Implementing roles
-
-Create roles:
-
-- Using ansible-galaxy command line tool
-  - ansible-galaxy  init //will create the role structure
-  - ansible-galaxy install -r //will install role
-
-Use roles in playbooks
-
-- roles/requirements.yml
-
-![requirements](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/requirements.png)
-
-### Order of execution
-
-- default : the order specified in the playbook
-- pre_tasks: executed before any roles are applied
-- post_tasks: executed after all roles are applied
-
-## What is DevOps?
-
-Let's watch on Youtube [What is DevOps? - In Simple English](https://www.youtube.com/watch?v=_I94-tJlovg).
-
