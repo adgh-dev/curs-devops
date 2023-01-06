@@ -623,7 +623,7 @@ terraform destroy
 
 ### Setup required infrastructure using Terraform
 
-For the next exercise, we need to setup the lab infrastructure for running Ansible playbooks. This will be comprised of an ansible-controller host and 3 web-server VMs for serving our application.
+For the next exercise, we need to setup the lab infrastructure for running Ansible playbooks. This will be comprised of an ansible-controller host and 3 web-server VMs for serving our application. Again, all the Terraform commands will be started from the Cloud Shell VM.
 
 Make sure all lab infrastrucure from previous exercises is cleaned up (`terraform destroy` in corresponding paths) and create a new folder:
 ```
@@ -740,6 +740,15 @@ resource "google_compute_firewall" "app-server" {
 }
 ```
 
+Deploy the Terraform infrastrucuture in the same way as you did for the previous exercises:
+```
+terraform init
+
+terraform plan
+
+terraform apply
+```
+
 ### Configure Ansible Server
 
 SSH to the ansible-controller VM to start the installation process.
@@ -800,7 +809,7 @@ Create a new folder where you will place the local inventory file (otherwise ans
 mkdir ~/ansible && cd $_
 ```
 
-Create an inventory file and add the hostnames or IP addresses of the remote machines to /etc/ansible/hosts. Use the `internal` IP addresses, not the public ones:
+Create an inventory file and add the hostnames or IP addresses of the remote machines. If you use IPs, use the `internal` addresses, not the public ones - but in most cases the plain hostnames should work (GCP has a builtin DNS for the default network):
 ```
 cat <<EOF > hosts
 [webservers]
@@ -976,23 +985,26 @@ sudo systemctl status jenkins
 
 You should receive the following output:
 ```
-root@vps:~# sudo systemctl status jenkins
-● jenkins.service - LSB: Start Jenkins at boot time
-     Loaded: loaded (/etc/init.d/jenkins; generated)
-     Active: active (exited) since Sat 2022-02-12 04:50:43 EST; 1min 35s ago
-       Docs: man:systemd-sysv-generator(8)
-      Tasks: 0 (limit: 4678)
-     Memory: 0B
-        CPU: 0
+● jenkins.service - Jenkins Continuous Integration Server
+     Loaded: loaded (/lib/systemd/system/jenkins.service; enabled; vendor preset: enabled)
+     Active: active (running) since Fri 2023-01-06 10:19:58 UTC; 36s ago
+   Main PID: 11709 (java)
+      Tasks: 47 (limit: 4693)
+     Memory: 1.2G
+        CPU: 59.256s
      CGroup: /system.slice/jenkins.service
+             └─11709 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/ca>
 
-Feb 12 04:50:41 test.vps systemd[1]: Starting LSB: Start Jenkins at boot time...
-Feb 12 04:50:41 test.vps jenkins[37526]: Correct java version found
-Feb 12 04:50:42 test.vps su[37564]: (to jenkins) root on none
-Feb 12 04:50:42 test.vps su[37564]: pam_unix(su-l:session): session opened for user jenkins(uid=114) by (uid=0)
-Feb 12 04:50:42 test.vps su[37564]: pam_unix(su-l:session): session closed for user jenkins
-Feb 12 04:50:43 test.vps jenkins[37526]: Starting Jenkins Automation Server: jenkins.
-Feb 12 04:50:43 test.vps systemd[1]: Started LSB: Start Jenkins at boot time.
+Jan 06 10:19:35 ansible-controller jenkins[11709]: 6b044d342f81407aa15980d2093379a0
+Jan 06 10:19:35 ansible-controller jenkins[11709]: This may also be found at: /var/lib/jenkins/secrets/initial>
+Jan 06 10:19:35 ansible-controller jenkins[11709]: ***********************************************************>
+Jan 06 10:19:35 ansible-controller jenkins[11709]: ***********************************************************>
+Jan 06 10:19:35 ansible-controller jenkins[11709]: ***********************************************************>
+Jan 06 10:19:58 ansible-controller jenkins[11709]: 2023-01-06 10:19:58.402+0000 [id=30]        INFO        jen>
+Jan 06 10:19:58 ansible-controller jenkins[11709]: 2023-01-06 10:19:58.439+0000 [id=22]        INFO        hud>
+Jan 06 10:19:58 ansible-controller systemd[1]: Started Jenkins Continuous Integration Server.
+Jan 06 10:19:59 ansible-controller jenkins[11709]: 2023-01-06 10:19:59.102+0000 [id=46]        INFO        h.m>
+Jan 06 10:19:59 ansible-controller jenkins[11709]: 2023-01-06 10:19:59.104+0000 [id=46]        INFO        hud>
 ```
 
 Another way to check if Jenkins, is active is checking the running processes:
@@ -1013,11 +1025,10 @@ http://YourServerIPaddress:8080
 
 The Jenkins home page is asking the administrator in the order to be unlocked. To find the administrator password execute the following command:
 ```
-cat /var/lib/jenkins/secrets/initialAdminPassword
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 The output of the administrator password will be as described below:
 ```
-root@vps:~# cat /var/lib/jenkins/secrets/initialAdminPassword
 e5bcfa4486dd412f988a4762a8535aa3
 ```
 
@@ -1027,6 +1038,54 @@ Go through the Jenkins install wizard with default values until you get to the `
 
 ### Create your first Jenkins job
 
-...TBD
+Although Jenkins is usually used to deploy and/or build applications on remote hosts - either using Jenkins agents, or other third party tools (ie Ansible), for today's example we will build and deploy straight on the same host where the Controller is running. This was decided both to save time and because authentication in GCP is usually handled using service accounts instead of plain ssh keys, thus complicating things outside the scope of this exercise.
 
+Jenkins does not run as superuser, so we need to install the prerequisites on host beforehand. Because we will fetch the source files from github, we need to have the `git` binary available on host, so go ahead and install that first:
+```
+sudo apt install git -y
+```
+Also a JDK is needed to build the actual application:
+```
+sudo apt install openjdk-11-jdk -y
+```
 
+Go back to the Jenkins web page and create a new job:
+
+- Click on `+ New Item` to create a new job
+- Decide on a Job name and select Freestyle Project
+- Under `Source Code Management`select Git and enter the fx-trading-app github URL: https://github.com/WebToLearn/fx-trading-app.git
+- There are no credentials needed, as this is a public repository
+- Check the available Build Triggers (questian mark icon next to each one), but don't select any of them - we will trigger the build manually 
+- Under Build Steps select `Execute Shell`
+
+The execute shell allows us to run a full bash script. In today's example we will simply use the same logic as before - build and deploy the quotes-service application.
+
+Enter the following as the automation script:
+```
+# go to app root folder
+cd App/quote-service
+
+# remove any previous artifacts, if existing
+rm -fr target/
+
+# make mvn wrapper executable
+chmod 755 mvnw
+
+# run the maven build 
+./mvnw package -Pprod -DskipTests
+
+# start the application in the background, redirecting the console output to quote-service.log
+java -jar target/quote-service-0.0.1-SNAPSHOT.jar  > quote-service.log 2>&1 &
+
+# wait a few seconds for the application to start
+sleep 10
+
+# check the log to see if the application is started correctly
+cat quote-service.log
+```
+
+As you might notice, we didn't need to run git commands, as the Job itself is configured to fetch the source repository on it's own.
+
+### Cleanup
+
+Make sure you run `terraform destroy` in your Cloud Shell instance, after you are done with the lab.
