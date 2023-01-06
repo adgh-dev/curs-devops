@@ -160,7 +160,7 @@ Typically, the only thing a user needs is a terminal to execute Ansible commands
 
 ### Orientation to the Lab Environment
 
-![classroom](https://docs.ansible.com/ansible/latest/_images/ansible_basic.svg)
+![classroom](https://github.com/WebToLearn/fx-trading-app/blob/devops_open_source/Week_12/Theory/images/classroom.PNG)
 
 
 
