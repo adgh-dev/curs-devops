@@ -759,7 +759,7 @@ Make sure ansible is installed correctly and available to non-root user:
 ansible --version
 ```
 
-As mentioned in the theory part, Ansible uses ssh for connecting the controller to the managed nodes and running modules or ad-hoc commands. This requires the ssh keys are configured correctly at the OS level to allow ssh access.
+As mentioned in the theory part, Ansible uses ssh for connecting the controller to the managed nodes and running modules or ad-hoc commands. This requires the ssh keys to be configured correctly at the OS level to allow ssh access.
 ```
 ssh-keygen
 ```
@@ -779,11 +779,17 @@ echo ANSIBLE_CONTROLLER_PUBLIC_KEY >> ~/.ssh/authorized_keys
 ```
 In the above command, substitute the `ANSIBLE_CONTROLLER_PUBLIC_KEY` with the output from the cat ~/.ssh/id_rsa.pub command that you executed on your local system. It should start with ssh-rsa AAAA... or similar.
 
+Ansible is able to also run commands on remote hosts as superuser (root). Because we don't want to be prompted for password when this happens, we need to configure the remote hosts OS to allow switching to root, when using our GCP global user. Run the following on each of the app-servers as well, after configuring the authorized_hosts file:
+```
+echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ansible_user
+``` 
+
+
 If everything worked correctly you are now done with the app-server VMs setup. From now on, all the following commands will be executed on `ansible-controller`.
 
 To test the ssh connection, you can try running a remote command on one or each of the app-servers. 
 ```
-sh app-server-1 hostname
+ssh app-server-1 hostname
 ```
 The `hostname` command is executed remotely and should display the correct host - app-server-1 in our example.
 
@@ -797,14 +803,118 @@ mkdir ~/ansible && cd $_
 Create an inventory file and add the hostnames or IP addresses of the remote machines to /etc/ansible/hosts. Use the `internal` IP addresses, not the public ones:
 ```
 cat <<EOF > hosts
-[web-servers]
+[webservers]
 app-server-1
 app-server-2
 app-server-3
 EOF
 ```
 
+You can make sure that the hosts are accessible from the ansible server by running the `ping` module on all hosts defined in the local inventory file:
+```
+ansible -i hosts all -m ping
+```
+You should get back a similar outoput:
+```
+app-server-1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+app-server-2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+app-server-3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+```
 
+Now that we can confirm everything works correctly, we can go ahead with setting up the automation. This will be similar with the first exercise from `Week_12` - deploying the `quote-service` Spring Boot application to each of the app-server hosts natively (using local Java, not running inside a container).
+
+The firewall rules were already configured as part of the Terraform setup, so we should be able to access the application using the default port defined in github (8220).
+
+Create the following playbook.yaml file in the same ansible folder:
+```
+---
+- name: Configure application hosts
+  hosts: webservers
+  become: true
+  vars:
+      - destdir: /apps/java
+  tasks:
+
+      - name : Install OpenJDK
+        apt:
+          name: openjdk-11-jdk
+          state: present
+
+      - name : Install git
+        apt:
+          name: git
+          state: present
+
+      - name: Download the source files from github
+        become: yes
+        git:
+          repo: 'https://github.com/WebToLearn/fx-trading-app.git'
+          dest: "{{ destdir }}"
+
+      - name: Build the jar package
+        shell:
+          "chmod 755 mvnw && ./mvnw package -Pprod -DskipTests"
+        args:
+          chdir: "{{ destdir }}/App/quote-service"
+        register: mvninstlout
+
+      - name: Debug java build command
+        debug: msg='{{mvninstlout.stdout_lines}}'
+
+      - name: Start the App
+        async: 10
+        poll: 0
+        shell:
+          "(java -jar target/quote-service-0.0.1-SNAPSHOT.jar > quote-service.log 2>&1 &)"
+        args:
+          chdir: "{{ destdir }}/App/quote-service"
+        register: appstart
+
+      - name: Validating the port is open
+        tags: javavalidate
+        wait_for:
+          host: "localhost"
+          port: 8220
+          delay: 10
+          timeout: 30
+          state: started
+          msg: "quote-service application started"
+```
+
+Run the playbook, passing the local hosts configuration file:
+```
+ansible-playbook -i hosts playbook.yaml
+```
+
+The playbook should be pretty self-explaining, but as a summary it does the following, on `all` app-server hosts:
+- sets up `destdir` variable to a predefined path where we will download and deploy the application from
+- using apt ansible module makes sure openjdk 11 is installed (it will use the OS level apt package manager to installe it if not found)
+- in a similar maner, it installs git on host
+- fetches the java source files from github
+- makes mvn wrapper executable and builds the application, packaging it as a jar file to the default path
+- displays the build log to ansible console
+- starts the application, sending all output to quote-service.log file, created in the application root path
+- confirms that the application is started and listening on default port (8220)
+
+You can see if the application is running correctly by either running curl from the ansible controller, or use the external IP and try to reach it from your local browser. As the firewall rules were configured during the Terraform step, it should work correctly.
 <br />
 
 ## Exercise 4 - Jenkins Automation
