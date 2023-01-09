@@ -217,7 +217,7 @@ Although Ansible is the most common configuration management tool at the moment,
 
 They are mentioned here just for information purposes. One of the major difference between Ansible and the other two is that the first one is agentless. What this means is that you do not need to install any software on the remote nodes, before attempting to run automation tasks. All that Ansible requires is that the remote host has a correct version of python installed.
 
-![ansible-chef-puppet](https://www.veritis.com/wp-content/uploads/Infographics/chef-vs-puppet-vs-ansible-what-are-the-differences-it-infographic.png)
+<!-- ![ansible-chef-puppet](https://www.veritis.com/wp-content/uploads/Infographics/chef-vs-puppet-vs-ansible-what-are-the-differences-it-infographic.png) -->
 
 ![ansible-puppet-chef](https://blog.aspiresys.com/wp-content/uploads/2022/03/Chef-vs-Puppet-vs-Ansible-%E2%80%93-The-Salient-Differences.jpg)
 
