@@ -1,4 +1,4 @@
-# Week 12 - Devops
+# Week 13 - Devops Automation
 
 ## Table of contents
 

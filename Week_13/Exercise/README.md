@@ -1,4 +1,4 @@
-# Week 13 - Continous deployment exercises
+# Week 13 - Devops Automation Exercises
 
 ## Table of contents
 
