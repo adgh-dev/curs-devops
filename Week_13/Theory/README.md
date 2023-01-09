@@ -155,15 +155,22 @@ Typically, the only thing a user needs is a terminal to execute Ansible commands
 
 - Tasks: Units of action that combine a module and its arguments along with some other parameters.
 
-- Playbooks: An ordered list of tasks along with its necessary parameters that define a recipe to configure a system.
+- Plays: An ordered list of tasks along with its necessary parameters that define a recipe to configure a system.
 
-- Roles: Redistributable units of organization that allow users to share automation code easier.
+- Playbooks: yaml file containing one ore more plays 
+
+- Roles: Redistributable units of organization that allow users to share automation code easier. Roles enable us to reuse and share our Ansible code efficiently. They provide a well-defined framework and structure for setting your tasks, variables, handlers, metadata, templates, and other files. This way, we can reference and call them in our playbooks with just a few lines of code while we can reuse the same roles over many projects without the need to duplicate our code.
 
 ### Ansible Playbooks
 
-The main feature of Ansible we will use in the lab is the playbook.
+Playbooks are the simplest way in Ansible to automate repeating tasks in the form of reusable and consistent configuration files. Playbooks are defined in YAML files and contain any ordered set of steps to be executed on our managed nodes.
 
-ansible-playbook example:
+As mentioned, tasks in a playbook are executed from top to bottom. At a minimum, a playbook should define the managed nodes to target and some tasks to run against them.
+
+In playbooks, data elements at the same level must share the same indentation while items that are children of other items must be indented more than their parents. 
+
+Let’s look at a simple playbook to get an idea of how that looks in practice. 
+
 ```
 ---
   # Play1 - WebServer related tasks
